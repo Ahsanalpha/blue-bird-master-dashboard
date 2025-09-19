@@ -30,7 +30,6 @@ export default function DashboardPage() {
       const fetchStats = async () => {
         try {
           const data = await tenantApi.getTenantStats()
-          console.log("Fetched tenant stats:", data)
           setStatsData(data)
         } catch (error) {
           console.error("Failed to fetch tenant stats:", error)
@@ -75,7 +74,7 @@ export default function DashboardPage() {
             <Building2 className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{statsData.allStats.total_tenants}</div>
+            <div className="text-2xl font-bold">{statsData?.allStats?.total_tenants}</div>
             <p className="text-xs text-muted-foreground">All registered tenants</p>
           </CardContent>
         </Card>
@@ -86,9 +85,9 @@ export default function DashboardPage() {
             <Users className="h-4 w-4 text-green-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{statsData.allStats.active_tenants}</div>
+            <div className="text-2xl font-bold">{statsData?.allStats?.active_tenants}</div>
             <p className="text-xs text-muted-foreground">
-              {Math.round((statsData.allStats.active_tenants / statsData.allStats.total_tenants) * 100)}% of total
+              {Math.round((statsData?.allStats?.active_tenants / statsData?.allStats?.total_tenants) * 100)}% of total
             </p>
           </CardContent>
         </Card>
@@ -99,7 +98,7 @@ export default function DashboardPage() {
             <AlertTriangle className="h-4 w-4 text-orange-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{statsData.allStats.suspended_tenants}</div>
+            <div className="text-2xl font-bold">{statsData?.allStats?.suspended_tenants}</div>
             <p className="text-xs text-muted-foreground">Require attention</p>
           </CardContent>
         </Card>
@@ -110,9 +109,9 @@ export default function DashboardPage() {
             <UserX className="h-4 w-4 text-red-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{statsData.allStats.cancelled_tenants}</div>
+            <div className="text-2xl font-bold">{statsData?.allStats?.cancelled_tenants}</div>
             <p className="text-xs text-muted-foreground">
-              {Math.round((statsData.allStats.cancelled_tenants / statsData.allStats.total_tenants) * 100)}% churn rate
+              {Math.round((statsData?.allStats?.cancelled_tenants / statsData?.allStats?.total_tenants) * 100)}% churn rate
             </p>
           </CardContent>
         </Card>
@@ -125,9 +124,9 @@ export default function DashboardPage() {
             <Building2 className="h-4 w-4 text-gray-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{statsData.allStats.free_plan_tenants}</div>
+            <div className="text-2xl font-bold">{statsData?.allStats?.free_plan_tenants}</div>
             <p className="text-xs text-muted-foreground">
-              {Math.round((statsData.allStats.free_plan_tenants / statsData.allStats.total_tenants) * 100)}% of total
+              {Math.round((statsData?.allStats?.free_plan_tenants / statsData?.allStats?.total_tenants) * 100)}% of total
             </p>
           </CardContent>
         </Card>
@@ -138,9 +137,9 @@ export default function DashboardPage() {
             <CreditCard className="h-4 w-4 text-blue-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{statsData.allStats.standard_plan_tenants}</div>
+            <div className="text-2xl font-bold">{statsData?.allStats?.standard_plan_tenants}</div>
             <p className="text-xs text-muted-foreground">
-              {Math.round((statsData.allStats.standard_plan_tenants / statsData.allStats.total_tenants) * 100)}% of total
+              {Math.round((statsData?.allStats?.standard_plan_tenants / statsData?.allStats?.total_tenants) * 100)}% of total
             </p>
           </CardContent>
         </Card>
@@ -151,9 +150,9 @@ export default function DashboardPage() {
             <Crown className="h-4 w-4 text-purple-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{statsData.allStats.enterprise_plan_tenants}</div>
+            <div className="text-2xl font-bold">{statsData?.allStats?.enterprise_plan_tenants}</div>
             <p className="text-xs text-muted-foreground">
-              {Math.round((statsData.allStats.enterprise_plan_tenants / statsData.allStats.total_tenants) * 100)}% of total
+              {Math.round((statsData?.allStats?.enterprise_plan_tenants / statsData?.allStats?.total_tenants) * 100)}% of total
             </p>
           </CardContent>
         </Card>
@@ -166,9 +165,9 @@ export default function DashboardPage() {
             <Calendar className="h-4 w-4 text-green-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{statsData.allStats.monthly_billing_tenants}</div>
+            <div className="text-2xl font-bold">{statsData?.allStats?.monthly_billing_tenants}</div>
             <p className="text-xs text-muted-foreground">
-              {Math.round((statsData.allStats.monthly_billing_tenants / statsData.allStats.total_tenants) * 100)}% monthly billing
+              {Math.round((statsData?.allStats?.monthly_billing_tenants / statsData?.allStats?.total_tenants) * 100)}% monthly billing
             </p>
           </CardContent>
         </Card>
@@ -179,9 +178,9 @@ export default function DashboardPage() {
             <TrendingUp className="h-4 w-4 text-blue-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{statsData.allStats.yearly_billing_tenants}</div>
+            <div className="text-2xl font-bold">{statsData?.allStats?.yearly_billing_tenants}</div>
             <p className="text-xs text-muted-foreground">
-              {Math.round((statsData.allStats.yearly_billing_tenants / statsData.allStats.total_tenants) * 100)}% yearly billing
+              {Math.round((statsData?.allStats?.yearly_billing_tenants / statsData?.allStats?.total_tenants) * 100)}% yearly billing
             </p>
           </CardContent>
         </Card>

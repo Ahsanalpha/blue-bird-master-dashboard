@@ -1,10 +1,27 @@
+'use client'
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
+import { useAuth } from "@/contexts/auth-context"
 
 export default function AdminSettingsPage() {
+  const { user } = useAuth()
+
+  interface User {
+  id: number;
+  email: string;
+  first_name: string;
+  middle_name: string;
+  last_name: string;
+  phone_number: string;
+  two_factor_auth: boolean;
+  verified: boolean;
+  created_at: string;  // ISO date string format (e.g. "2025-09-16T12:34:56Z")
+  updated_at: string;  // ISO date string format
+}
+
   return (
     <div className="space-y-6">
       <div>
@@ -23,24 +40,28 @@ export default function AdminSettingsPage() {
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div className="space-y-2">
                 <Label htmlFor="firstName">First Name</Label>
-                <Input id="firstName" placeholder="John" defaultValue="John" />
+                <Input id="firstName" placeholder="Please enter your first name" defaultValue={user?.first_name} />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="middleName">Middle Name</Label>
+                <Input id="middleName" placeholder="please enter your middle name" defaultValue={user?.middle_name} />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="lastName">Last Name</Label>
-                <Input id="lastName" placeholder="Doe" defaultValue="Doe" />
+                <Input id="lastName" placeholder="please enter your last name" defaultValue={user?.last_name} />
               </div>
             </div>
-            <div className="space-y-2">
+            {/* <div className="space-y-2">
               <Label htmlFor="username">Username</Label>
-              <Input id="username" placeholder="johndoe" defaultValue="admin" />
-            </div>
+              <Input id="username" placeholder="please enter " defaultValue="admin" />
+            </div> */}
             <div className="space-y-2">
               <Label htmlFor="email">Email Address</Label>
-              <Input id="email" type="email" placeholder="john@example.com" defaultValue="admin@company.com" />
+              <Input id="email" type="email" placeholder="john@example.com" defaultValue={user?.email} />
             </div>
             <div className="space-y-2">
               <Label htmlFor="phone">Phone Number</Label>
-              <Input id="phone" type="tel" placeholder="+27 71 234 5678" defaultValue="+27 71 234 5678" />
+              <Input id="phone" type="tel" placeholder="+27 71 234 5678" defaultValue={user?.phone_number} />
             </div>
           </form>
         </CardContent>
@@ -56,7 +77,7 @@ export default function AdminSettingsPage() {
           <form className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="currentPassword">Current Password</Label>
-              <Input id="currentPassword" type="password" />
+              <Input id="currentPassword" type="password"/>
             </div>
             <div className="space-y-2">
               <Label htmlFor="newPassword">New Password</Label>

@@ -24,23 +24,28 @@ export function TenantList({ onTenantAdded }: TenantListProps) {
   const [statusFilter, setStatusFilter] = useState("all")
   const [planFilter, setPlanFilter] = useState("all")
   const [currentPage, setCurrentPage] = useState(1)
-  const [itemsPerPage] = useState(5)
+  const [itemsPerPage,setItemsPerPage] = useState(5)
+  const [totalCount, setTotalCount] = useState(0)
   const router = useRouter()
 
   useEffect(() => {
-    const fetchTenants = async () => {
-      try {
-        const data = await tenantApi.getTenants()
-        setTenants(data)
-      } catch (error) {
-        console.error("Failed to fetch tenants:", error)
-      } finally {
-        setLoading(false)
-      }
+  const fetchTenants = async () => {
+    try {
+      setLoading(true)
+      const offset = (currentPage - 1) * itemsPerPage
+      const data = await tenantApi.getTenants(offset, itemsPerPage)
+      setTenants(data?.data?.tenants)        // expect backend returns { items: Tenant[], total: number }
+      setTotalCount(data?.meta?.total)
+    } catch (error) {
+      console.error("Failed to fetch tenants:", error)
+    } finally {
+      setLoading(false)
     }
+  }
 
-    fetchTenants()
-  }, [])
+  fetchTenants()
+}, [currentPage, itemsPerPage])
+
 
 
   useEffect(() => {

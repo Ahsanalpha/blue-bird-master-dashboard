@@ -48,6 +48,12 @@ export interface IAllStats {
   yearly_billing_tenants: number;
 }
 
+export interface TenantResponse {
+  success: boolean;
+  data: {tenants:Tenant[]};
+  meta: {count:number, total: number};
+}
+
 export interface TenantStats {
   total: number;
   active: number;
@@ -68,12 +74,13 @@ export async function refreshAccessToken() {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${refresh_token}`,
+      Authorization: `Bearer ${access_token}`,
     },
     body: JSON.stringify({ refresh_token }),
   });
   if (!response.ok) {
-    throw new Error("Failed to refresh access token");
+
+    // throw new Error("Failed to refresh access token");
   }
   const data = await response.json();
   const newAccessToken = data.data.access_token;
@@ -85,44 +92,39 @@ export async function refreshAccessToken() {
 // Mock API functions - replace with actual API calls
 export const tenantApi = {
   // Get all tenants
-  async getTenants(): Promise<Tenant[]> {
-    // Simulate API delay
-    // await new Promise((resolve) => setTimeout(resolve, 500))
-    const endpoint = `${baseUrl}master-admin/tenants/all`;
-    const response = await fetch(endpoint, {
+  async getTenants(offset = 0, limit = 10): Promise<TenantResponse> {
+  const endpoint = `${baseUrl}master-admin/tenants/all?offset=${offset}&limit=${limit}`;
+  const response = await fetch(endpoint, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${access_token}`,
+    },
+  });
+
+  if (response.status === 401) {
+    const newAccessToken = await refreshAccessToken();
+    const retryResponse = await fetch(endpoint, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${access_token}`,
+        Authorization: `Bearer ${newAccessToken}`,
       },
     });
-    if (response.status === 401) {
-      const newAccessToken = await refreshAccessToken();
-      // Retry the original request with the new access token
-      const retryResponse = await fetch(endpoint, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${newAccessToken}`,
-        },
-      });
-      if (!retryResponse.ok) {
-        // throw new Error("Failed to fetch tenants after refreshing token");
-      }
-      const retryData = await retryResponse.json();
-      return retryData.data.tenants;
-    }
-    console.log("Get Tenants Response:", response);
-    // if (!response.ok) {
-    // throw new Error('Failed to fetch tenants');
-    // }
-    const data = await response.json();
-    return data.data.tenants;
-  },
+    const retryData = await retryResponse.json();
+    return retryData;
+  }
+
+  const data = await response.json();
+  console.log("Get Tenants Response:", data);
+  return data;
+}
+,
 
   // Get tenant statistics
   async getTenantStats(): Promise<TenantStats> {
     const tenants = await this.getTenants();
+    console.log("Tenants for stats:", tenants);
     const endpoint = `${baseUrl}master-admin/tenants/stats`;
     const response = await fetch(endpoint, {
       method: "GET",
@@ -147,32 +149,31 @@ export const tenantApi = {
       const retryData = await retryResponse.json();
       return {
         allStats: retryData.data.tenants,
-        total: tenants.length,
-        active: tenants.filter((t) => t.status === "active").length,
-        premium: tenants.filter(
+        total: tenants?.data?.tenants.length,
+        active: tenants?.data?.tenants.filter((t) => t.status === "active")?.length,
+        premium: tenants?.data?.tenants.filter(
           (t) =>
             t.subscription_plan === "premium" ||
             t.subscription_plan === "enterprise"
         ).length,
-        free: tenants.filter((t) => t.subscription_plan === "free").length,
+        free: tenants?.data?.tenants.filter((t) => t.subscription_plan === "free")?.length,
       };
     }
     // if (!response.ok) {
     //   throw new Error('Failed to fetch tenants');
     // }
     const data = await response.json();
-    console.log("Tenant Stats Data:", data);
 
     return {
       allStats: data.data,
-      total: tenants.length,
-      active: tenants.filter((t) => t.status === "active").length,
-      premium: tenants.filter(
+      total: tenants?.data?.tenants.length,
+      active: tenants?.data?.tenants.filter((t) => t.status === "active")?.length,
+      premium: tenants?.data?.tenants.filter(
         (t) =>
           t.subscription_plan === "premium" ||
           t.subscription_plan === "enterprise"
       ).length,
-      free: tenants.filter((t) => t.subscription_plan === "free").length,
+      free: tenants?.data?.tenants.filter((t) => t.subscription_plan === "free")?.length,
     };
   },
 

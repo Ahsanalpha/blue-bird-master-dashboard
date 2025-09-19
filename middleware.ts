@@ -1,16 +1,5 @@
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
-import {jwtDecode} from "jwt-decode";
-
-interface IJwtPayload {
-  exp: number;      // Expiration time (Unix timestamp)
-  iat: number;      // Issued at time (Unix timestamp)
-  roleId: number;   // Role ID of the user
-  tenantId: number; // Tenant ID (e.g. for multi-tenant systems)
-  type: string;     // Token type, e.g., "access"
-  userId: number;   // User ID
-}
-
 
 
 export function middleware(request: NextRequest) {

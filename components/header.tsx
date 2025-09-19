@@ -19,15 +19,12 @@ import { useToast } from "@/hooks/use-toast"
 export function Header() {
   const { toggle } = useSidebar()
   const { user, logout } = useAuth()
+  console.log("User in header:", user)
   const router = useRouter()
   const { toast } = useToast()
 
   const handleLogout = () => {
     logout()
-    toast({
-      title: "Logged out",
-      description: "You have been successfully logged out.",
-    })
     router.push("/login")
   }
 
@@ -74,7 +71,7 @@ export function Header() {
             <DropdownMenuLabel className="font-normal">
               <div className="flex flex-col space-y-1">
                 <p className="text-sm font-medium leading-none">
-                  {user?.firstName} {user?.lastName}
+                  {user?.first_name} {user?.last_name}
                 </p>
                 <p className="text-xs leading-none text-muted-foreground">{user?.email}</p>
               </div>
