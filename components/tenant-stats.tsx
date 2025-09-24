@@ -3,10 +3,10 @@
 import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Building2, CreditCard, DollarSign } from "lucide-react"
-import { tenantApi } from "@/lib/tenants"
+import { tenantApi, TenantStats as ITenantStats } from "@/lib/tenants"
 
 export function TenantStats() {
-  const [stats, setStats] = useState<any | null>(null)
+  const [stats, setStats] = useState<ITenantStats | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {

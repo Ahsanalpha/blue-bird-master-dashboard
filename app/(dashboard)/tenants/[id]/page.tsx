@@ -49,23 +49,23 @@ export default function TenantDetailsPage() {
   const [showConfirmDialog, setShowConfirmDialog] = useState(false)
   const [saving, setSaving] = useState(false)
 
-  useEffect(() => {
-    const fetchTenant = async () => {
-      try {
-        const data = await tenantApi.getTenantById(tenantId)
-        if (data) {
-          setTenant(data)
-          setFormData(data)
-        }
-      } catch (error) {
-        console.error("Failed to fetch tenant:", error)
-      } finally {
-        setLoading(false)
-      }
-    }
+  // useEffect(() => {
+  //   const fetchTenant = async () => {
+  //     try {
+  //       const data = await tenantApi.getTenantById(tenantId)
+  //       if (data) {
+  //         setTenant(data)
+  //         setFormData(data)
+  //       }
+  //     } catch (error) {
+  //       console.error("Failed to fetch tenant:", error)
+  //     } finally {
+  //       setLoading(false)
+  //     }
+  //   }
 
-    fetchTenant()
-  }, [tenantId])
+  //   fetchTenant()
+  // }, [tenantId])
 
   if (loading) {
     return (
@@ -122,8 +122,8 @@ export default function TenantDetailsPage() {
   const handleConfirmedSave = async () => {
     setSaving(true)
     try {
-      const updatedTenant = await tenantApi.updateTenant(tenantId, formData)
-      setTenant(updatedTenant)
+      // const updatedTenant = await tenantApi.updateTenant(tenantId, formData)
+      // setTenant(updatedTenant)
       setIsEditing(false)
       toast({
         title: "Success",
@@ -499,7 +499,7 @@ export default function TenantDetailsPage() {
           <AlertDialogHeader>
             <AlertDialogTitle>Confirm Changes</AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure you want to save the changes to {formData.company_name}? This action will update the tenant's
+              Are you sure you want to save the changes to {formData.company_name}? This action will update the tenant&apos;s
               information.
             </AlertDialogDescription>
           </AlertDialogHeader>

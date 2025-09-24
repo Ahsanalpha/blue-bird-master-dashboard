@@ -118,7 +118,7 @@ export default function Setup2FAPage() {
                 />
               </div>
               <div className="space-y-2">
-                <p className="text-sm text-muted-foreground">Can't scan the QR code? Enter this secret key manually:</p>
+                <p className="text-sm text-muted-foreground">Can&apos;t scan the QR code? Enter this secret key manually:</p>
                 <div className="flex items-center gap-2 p-3 bg-muted rounded-lg">
                   <code className="flex-1 text-sm font-mono">{secretKey}</code>
                   <Button type="button" variant="ghost" size="sm" onClick={handleCopySecret} className="h-8 w-8 p-0">
